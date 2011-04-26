@@ -14,8 +14,10 @@ int encode(FILE *iptr_file, FILE *optr_file, char *secret){
 	    if(!fread(&buf,sizeof(buf),1,iptr_file))
 		break;
 	    printf("%c",buf);
-	    char new_key = secret[sec_idx]^new_secret[sec_idx];
-	    char new_chr = buf^new_key;
+//	    char new_key = secret[sec_idx]^new_secret[sec_idx];
+//	    char new_chr = buf^new_key;
+//	    char new_chr = (char)((int)buf+(int)new_secret[sec_idx]);
+	    char new_chr = (char)((int)buf+(int)secret[sec_idx]+(int)new_secret[sec_idx]);
 	    new_secret[sec_idx]=new_chr;
 	    fwrite(&new_chr, sizeof(new_chr),1,optr_file);
 	  }
@@ -34,8 +36,9 @@ int decode(FILE *iptr_file, FILE *optr_file, char *secret){
 	    //reading next character if present
 	    if(!fread(&buf,sizeof(buf),1,iptr_file))
 		break;
-	    char new_key = secret[sec_idx]^new_secret[sec_idx];
-	    char new_chr = buf^new_key;
+//	    char new_key = secret[sec_idx]^new_secret[sec_idx];
+//	    char new_chr = buf^new_key;
+	    char new_chr = (char)((int)buf-(int)secret[sec_idx]-(int)new_secret[sec_idx]);
 	    new_secret[sec_idx]=buf;
 	    fwrite(&new_chr, sizeof(new_chr),1,optr_file);
 	    printf("%c",new_chr);
