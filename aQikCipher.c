@@ -16,7 +16,6 @@ int encode(FILE *iptr_file, FILE *optr_file, char *secret){
 	    printf("%c",buf);
 	    char new_chr = (char)((int)buf+(int)secret[sec_idx]);
 	    new_chr = new_chr^new_secret[sec_idx];
-//	    char new_chr = (char)((int)buf+(int)secret[sec_idx]+(int)new_secret[sec_idx]);
 	    new_secret[sec_idx]=new_chr;
 	    fwrite(&new_chr, sizeof(new_chr),1,optr_file);
 	  }
@@ -37,7 +36,6 @@ int decode(FILE *iptr_file, FILE *optr_file, char *secret){
 		break;
 	    char new_chr = buf^new_secret[sec_idx];
 	    new_chr = (char)((int)new_chr-(int)secret[sec_idx]);
-//	    char new_chr = (char)((int)buf-(int)secret[sec_idx]-(int)new_secret[sec_idx]);
 	    new_secret[sec_idx]=buf;
 	    fwrite(&new_chr, sizeof(new_chr),1,optr_file);
 	    printf("%c",new_chr);
