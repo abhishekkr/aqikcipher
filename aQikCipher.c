@@ -1,23 +1,30 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "cli_switch.h"
+
+#define empty_secret "\0"
+#define default_secret "least-safe\0"
+
+enum action {Encrypt, Decrypt};
+
 
 int encode(FILE *iptr_file, FILE *optr_file, char *secret){
   char buf;
   int secret_len = strlen(secret);
   char *new_secret = (char *)calloc(secret_len, sizeof(char));
-  strncpy(new_secret,secret,secret_len);
+  strncpy(new_secret, secret, secret_len);
   while(!feof(iptr_file)){
     int sec_idx;
-    for(sec_idx=0; sec_idx<secret_len; sec_idx++){
+    for(sec_idx = 0; sec_idx < secret_len; sec_idx++){
       //reading next character if present
-      if(!fread(&buf,sizeof(buf),1,iptr_file))
+      if(!fread(&buf, sizeof(buf), 1, iptr_file))
         break;
       printf("%c",buf);
-      char new_chr = (char)((int)buf+(int)secret[sec_idx]);
+      char new_chr = (char)((int)buf + (int)secret[sec_idx]);
       new_chr = new_chr^new_secret[sec_idx];
-      new_secret[sec_idx]=new_chr;
-      fwrite(&new_chr, sizeof(new_chr),1,optr_file);
+      new_secret[sec_idx] = new_chr;
+      fwrite(&new_chr, sizeof(new_chr), 1, optr_file);
     }
   }
   return 0;
@@ -27,24 +34,24 @@ int decode(FILE *iptr_file, FILE *optr_file, char *secret){
   char buf;
   int secret_len = strlen(secret);
   char *new_secret = (char *)calloc(secret_len, sizeof(char));
-  strncpy(new_secret,secret,secret_len);
+  strncpy(new_secret, secret, secret_len);
   while(!feof(iptr_file)){
     int sec_idx;
-    for(sec_idx=0; sec_idx<secret_len; sec_idx++){
+    for(sec_idx = 0; sec_idx < secret_len; sec_idx++){
       //reading next character if present
-      if(!fread(&buf,sizeof(buf),1,iptr_file))
+      if(!fread(&buf, sizeof(buf), 1, iptr_file))
         break;
       char new_chr = buf^new_secret[sec_idx];
-      new_chr = (char)((int)new_chr-(int)secret[sec_idx]);
-      new_secret[sec_idx]=buf;
-      fwrite(&new_chr, sizeof(new_chr),1,optr_file);
-      printf("%c",new_chr);
+      new_chr = (char)((int)new_chr - (int)secret[sec_idx]);
+      new_secret[sec_idx] = buf;
+      fwrite(&new_chr, sizeof(new_chr), 1, optr_file);
+      printf("%c", new_chr);
     }
   }
   return 0;
 }
 
-int aKrypt(int choice, char *input_file, char *output_file, char *secret){
+int aKrypt(enum action choice, char *input_file, char *output_file, char *secret){
   FILE *iptr_file, *optr_file;
   iptr_file = fopen(input_file,"rb");
   optr_file = fopen(output_file,"wb");
@@ -57,15 +64,15 @@ int aKrypt(int choice, char *input_file, char *output_file, char *secret){
     printf("\nError: Output File writing is rasing as error.\n");
     exit(1);
   }
-  if (secret = "\0"){
-      secret = "least-safe\0";
+  if (secret = empty_secret){
+      secret = default_secret;
   }
   //read-KONVERT-write
   switch(choice){
-    case 1:
+    case 0:
       encode(iptr_file, optr_file, secret);
       break;
-    case 2:
+    case 1:
       decode(iptr_file, optr_file, secret);
       break;
     default:
@@ -88,20 +95,19 @@ void wrong_syntax(){
 
 
 /**
-./acrypt encode original.file encrypted.file
-./acrypt decode decrypted.file decrypted.file
+Main flow for A Qik Cipher.
 */
 int main(int ARGC, char *ARGV[]){
   if(ARGC!=5){
     wrong_syntax();
   }
-  if(strncmp(ARGV[1], "encode", 6)){
+  if(switch_encode(ARGV[1])){
     printf("Encrypting initializtion...\n");
-    aKrypt(1, ARGV[3], ARGV[4], ARGV[2]);
+    aKrypt(Encrypt, ARGV[3], ARGV[4], ARGV[2]);
   }
-  else if(strncmp(ARGV[1], "decode", 6)){
+  else if(switch_decode(ARGV[1])){
     printf("Decrypting initializtion...\n");
-    aKrypt(2, ARGV[3], ARGV[4], ARGV[2]);
+    aKrypt(Decrypt, ARGV[3], ARGV[4], ARGV[2]);
   }
   else{
     wrong_syntax();

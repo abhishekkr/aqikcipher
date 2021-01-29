@@ -9,7 +9,7 @@ BINARY_NAME="aqikcipher"
 buildBinaries(){
   [[ ! -d "${BUILD_DIR}" ]] && mkdir "${BUILD_DIR}"
 
-  gcc -o "${BUILD_DIR}/${BINARY_NAME}" ./aQikCipher.c
+  gcc -o "${BUILD_DIR}/${BINARY_NAME}" ./aQikCipher.c ./cli_switch.c
 }
 
 ##### main

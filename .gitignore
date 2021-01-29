@@ -13,3 +13,4 @@ temp/*
 *.sock
 .cyfr.secrets
 out/**
+example/**
