@@ -33,6 +33,6 @@ fi
 
 ./out/aqikcipher encode safeword example/input.txt example/encrypted.txt
 
-./out/aqikcipher decode safeword example/encrypted.txt example/decrypted.txt
+./out/aqikcipher -v decode safeword example/encrypted.txt example/decrypted.txt
 
 diff example/input.txt example/decrypted.txt

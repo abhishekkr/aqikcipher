@@ -3,7 +3,7 @@
 
 ### Description:
 
-a Quick Cipher is my attempt at creating a dumb One-Time-Pad that tries using a small shared password
+a Quick Cipher is my attempt at creating a dumb One-Time-Pad that tries using a small shared password; good enough to mask, not to make it unhackable
 
 
 ### How-To Use:

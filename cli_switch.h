@@ -4,6 +4,8 @@
 
 typedef enum { false, true } bool;
 
+void howto_use(char *mynameis);
+
 bool match(char *arg, char *maybe);
 
 bool switch_encode(char *arg);

@@ -7,8 +7,13 @@
 #include <stdlib.h>
 #include "cli_switch.h"
 
-bool verbose = false;
 
+void howto_use(char *mynameis){
+  printf("A Qik Cipher\n\n~ Syntax:\n\n");
+  printf("./%s [-v] encode secret-string original.file encrypted.file\n\n", mynameis);
+  printf("./%s [-v] decode secret-string decrypted.file decrypted.file\n", mynameis);
+  exit(1);
+}
 
 bool match(char *arg, char *maybe){
   if(strncmp(arg, maybe, strlen(maybe)) == 0){
@@ -19,11 +24,8 @@ bool match(char *arg, char *maybe){
 
 bool switch_encode(char *arg){
     if (match(arg, "encode") || match(arg, "-e")){
-        printf(">e>>>> true for %s  %d\n", arg, match(arg, "encode"));
-        printf(">e>>>> true for %s  %d\n", arg, strncmp(arg, "encode", strlen("encode")));
         return true;
     }
-        printf(">e>>>> false for %s\n", arg);
     return false;
 }
 
