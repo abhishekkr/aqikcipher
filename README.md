@@ -8,7 +8,7 @@ a Quick Cipher is my attempt at creating a dumb One-Time-Pad that tries using a 
 
 ### How-To Use:
 
-* build it `mkdir out; gcc -o out/aqikcipher aQikCipher.c` or `./build.sh`
+* build it `mkdir out; gcc -o out/aqikcipher aQikCipher.c ./cli_switch.c` or `./build.sh`
 
 * Encrypt: `./out/aqikcipher encode password original.file encrypted.file`
 
